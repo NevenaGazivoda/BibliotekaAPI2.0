@@ -33,47 +33,20 @@ namespace BibliotekaAPI.Controllers
             return listaClanova;
         }
 
-        //[Route("GET/{idClana}")]
-        //[HttpGet]
-        //public HttpResponseMessage Citanje(int idClana)
-        //{
-        //    SqlCommand command = new SqlCommand("getClanById", db)
-        //    {
-        //        CommandType = CommandType.StoredProcedure
-        //    };
-
-        //    command.Parameters.Add("@ClanId", SqlDbType.Int).Value = idClana;
-
-        //    Clan clan = null;
-        //    try
-        //    {
-        //        db.Open();
-        //        SqlDataReader reader = command.ExecuteReader();
-
-        //        while (reader.Read())
-        //        {
-        //            clan = new Clan();
-        //            clan.PKClanID = Convert.ToInt32(reader[0]);
-        //            clan.Ime = Convert.ToString(reader[1]);
-        //            clan.Prezime = Convert.ToString(reader[2]);
-        //            clan.GodRodjenja = Convert.ToInt32(reader[3]);
-
-        //        }
-        //        reader.Close();
-        //        db.Close();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine(ex.Message);
-        //    }
-        //    if (clan == null)
-        //    {
-        //        return Request.CreateResponse(HttpStatusCode.NotFound, idClana);
-        //    }
-        //    return Request.CreateResponse(HttpStatusCode.OK, clan);
+        [Route("GET/{idClana}")]
+        [HttpGet]
+        public HttpResponseMessage Citanje(int idClana)
+        {
+            DBClanovi dBClanovi = new DBClanovi();
+            var clan= dBClanovi.Citanje(idClana);
+            if (clan == null)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound, idClana);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, clan);
 
 
-        //}
+        }
 
         [Route("POST")]
         [HttpPost]

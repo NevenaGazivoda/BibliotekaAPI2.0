@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -55,6 +56,39 @@ namespace DBAccess
         }
 
         
+        public ClanModel Citanje(int idClana)
+        {
+            SqlCommand command = new SqlCommand("getClanById", db)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            command.Parameters.Add("@ClanId", SqlDbType.Int).Value = idClana;
+
+            ClanModel clan = null;
+            try
+            {
+                db.Open();
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    clan = new ClanModel();
+                    clan.PKClanID = Convert.ToInt32(reader[0]);
+                    clan.Ime = Convert.ToString(reader[1]);
+                    clan.Prezime = Convert.ToString(reader[2]);
+                    clan.GodRodjenja = Convert.ToInt32(reader[3]);
+                }
+                reader.Close();
+                db.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return clan;
+        }
+
         public void Upis(ClanModel c)
         {
             SqlCommand command = new SqlCommand("postClanovi", db)
